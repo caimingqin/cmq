@@ -1,6 +1,7 @@
 package cmq.core.bootstrap;
 
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.ServletContext;
@@ -20,6 +21,11 @@ import cmq.core.domain.producer.ArrayBlockingQueueEventBuffer;
 import cmq.core.domain.producer.DomainEventBuffer;
 import cmq.core.inject.BeanInjector;
 import cmq.core.inject.impl.SpringBeanInjector;
+import cmq.core.notification.consumer.NotificationConsumer;
+import cmq.core.notification.consumer.NotificationListener;
+import cmq.core.notification.processor.NotificationProcessor;
+import cmq.core.notification.producer.ArrayBlockingQueueNotificationBuffer;
+import cmq.core.notification.producer.NotificationBuffer;
 import cmq.utils.ServletContextUtils;
 
 public class ApplicationBootstrap implements ServletContextListener {
@@ -56,10 +62,35 @@ public class ApplicationBootstrap implements ServletContextListener {
 		DomainEventBuffer domainEventBuffer = getDomainEventBuffer();
 		DomainEventConsumer domainEventConsumer = getDomainEventConsumer(eventHandlerVisitor
 				.getObjectHandlers());
-		openProcessor(domainEventBuffer, domainEventConsumer);
+		startDomainEventProcessor(domainEventBuffer, domainEventConsumer);
+		
+		NotificationBuffer notificationBuffer = getNotificationBuffer();
+		List<NotificationListener> listeners=buildNotificationListener();
+		NotificationConsumer notificationConsumer = new NotificationConsumer(listeners);
+		startNotificationListener(notificationBuffer,notificationConsumer);
+		
+	
 	}
 
-	private void openProcessor(DomainEventBuffer buffer,
+	private void startNotificationListener(NotificationBuffer notificationBuffer, NotificationConsumer consumer) {
+		NotificationProcessor domainEventProcessor = new NotificationProcessor(
+				notificationBuffer, consumer);
+		domainEventProcessor.start();
+		
+	}
+
+	private List<NotificationListener> buildNotificationListener() {
+		List<NotificationListener> listeners=new ArrayList<NotificationListener>();
+		String[] beanNames = this.beanInjector.getBeanNamesForType(NotificationListener.class);
+		for(String name:beanNames){
+			NotificationListener listener = (NotificationListener) this.beanInjector.getBean(name);
+			listeners.add(listener);
+		}
+		logger.info("buildNotificationListener===>>>size:"+listeners.size());
+		return listeners;
+	}
+
+	private void startDomainEventProcessor(DomainEventBuffer buffer,
 			DomainEventConsumer consumer) {
 		DomainEventProcessor domainEventProcessor = new DomainEventProcessor(
 				buffer, consumer);
@@ -72,6 +103,14 @@ public class ApplicationBootstrap implements ServletContextListener {
 				domainEventBuffer);
 		return domainEventBuffer;
 	}
+	
+	private NotificationBuffer getNotificationBuffer() {
+		NotificationBuffer nBuffer = new ArrayBlockingQueueNotificationBuffer();
+		beanInjector.registBean(NotificationBuffer.class.getName(),
+				nBuffer);
+		return nBuffer;
+	}
+	
 
 	private DomainEventConsumer getDomainEventConsumer(List<Object> consumers) {
 		DomainEventConsumer consumer =  new DomainEventConsumer(consumers);
@@ -85,8 +124,7 @@ public class ApplicationBootstrap implements ServletContextListener {
 	}
 
 	public void contextDestroyed(ServletContextEvent sce) {
-		// TODO Auto-generated method stub
-
+		this.beanInjector.destroyAll();
 	}
 
 }

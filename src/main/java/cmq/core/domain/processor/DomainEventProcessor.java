@@ -1,6 +1,5 @@
 package cmq.core.domain.processor;
 
-
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -20,8 +19,7 @@ public class DomainEventProcessor implements Runnable {
 	private DomainEventConsumer consumer;
 	private Executor executor = Executors.newFixedThreadPool(1);
 
-	public DomainEventProcessor(DomainEventBuffer buffer,
-			DomainEventConsumer consumer) {
+	public DomainEventProcessor(DomainEventBuffer buffer, DomainEventConsumer consumer) {
 		this.buffer = buffer;
 		this.consumer = consumer;
 	}
@@ -49,11 +47,15 @@ public class DomainEventProcessor implements Runnable {
 		while (running.get()) {
 			synchronized (this) {
 				try {
-					wait(2*1000);
-					DomainEvent domainEvent = buffer.take();
-					this.consumer.consumeDomainEvent(domainEvent);
+
+					if (buffer.size() > 0) {
+						DomainEvent domainEvent = buffer.take();
+						this.consumer.consumeDomainEvent(domainEvent);
+					} else {
+						wait(2 * 1000);
+					}
+
 				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}

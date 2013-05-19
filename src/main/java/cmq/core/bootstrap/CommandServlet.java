@@ -22,6 +22,9 @@ import cmq.core.domain.DomainEvent;
 import cmq.core.domain.DomainEventGather;
 import cmq.core.domain.producer.DomainEventBuffer;
 import cmq.core.inject.BeanInjector;
+import cmq.core.notification.Notification;
+import cmq.core.notification.Notification.Type;
+import cmq.core.notification.producer.NotificationBuffer;
 import cmq.utils.JSON;
 
 public class CommandServlet extends HttpServlet {
@@ -60,6 +63,9 @@ public class CommandServlet extends HttpServlet {
 			this.logger.info("get domainEventBuffer===========>>>"+domainEventBuffer);
 			this.logger.info("domainEvent==============>>>>"+domainEvent);
 			domainEventBuffer.put(domainEvent);
+			NotificationBuffer notificationBuffer = this.beanInjector.getBean(NotificationBuffer.class);
+			Notification notification = new Notification(Type.DOMAIN_EVENT, domainEvent);
+			notificationBuffer.put(notification);
 		}
 	}
 
