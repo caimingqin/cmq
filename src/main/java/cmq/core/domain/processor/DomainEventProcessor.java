@@ -1,5 +1,6 @@
 package cmq.core.domain.processor;
 
+
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -50,13 +51,13 @@ public class DomainEventProcessor implements Runnable {
 				try {
 					wait(2*1000);
 					DomainEvent domainEvent = buffer.take();
-					this.consumer.consume(domainEvent);
+					this.consumer.consumeDomainEvent(domainEvent);
 				} catch (InterruptedException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
-			
+
 		}
 	}
 
