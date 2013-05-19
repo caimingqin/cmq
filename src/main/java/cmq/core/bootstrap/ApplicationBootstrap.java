@@ -14,7 +14,7 @@ import cmq.core.bootstrap.resource.AnnotationBeanReader;
 import cmq.core.bootstrap.resource.surpport.visitor.BeanVisitor;
 import cmq.core.bootstrap.resource.surpport.visitor.CommandVisitor;
 import cmq.core.bootstrap.resource.surpport.visitor.EventHandlerVisitor;
-import cmq.core.domain.handler.DomainEventConsumer;
+import cmq.core.domain.consumer.DomainEventConsumer;
 import cmq.core.domain.processor.DomainEventProcessor;
 import cmq.core.domain.producer.ArrayBlockingQueueEventBuffer;
 import cmq.core.domain.producer.DomainEventBuffer;

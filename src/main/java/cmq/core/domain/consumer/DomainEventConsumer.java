@@ -1,4 +1,4 @@
-package cmq.core.domain.handler;
+package cmq.core.domain.consumer;
 
 import java.lang.reflect.Method;
 import java.util.ArrayList;

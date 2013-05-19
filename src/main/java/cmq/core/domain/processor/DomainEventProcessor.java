@@ -9,7 +9,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import cmq.core.domain.DomainEvent;
-import cmq.core.domain.handler.DomainEventConsumer;
+import cmq.core.domain.consumer.DomainEventConsumer;
 import cmq.core.domain.producer.DomainEventBuffer;
 
 public class DomainEventProcessor implements Runnable {
