@@ -1,4 +1,6 @@
-package cmq.core.domain;
+package cmq.core.domain.producer;
+
+import cmq.core.domain.DomainEvent;
 
 public interface DomainEventBuffer {
 

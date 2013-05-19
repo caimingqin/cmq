@@ -5,11 +5,11 @@ import java.util.Map;
 
 import cmq.utils.JSON;
 
-public class CommandProducer {
+public class CommandFactory {
 
 	private  Map<String, Class<? extends Command>> cMaps = new HashMap<String, Class<? extends Command>>();
 
-	public CommandProducer(  Map<String, Class<? extends Command>> cMaps) {
+	public CommandFactory(  Map<String, Class<? extends Command>> cMaps) {
 		this.cMaps = cMaps;
 	}
 

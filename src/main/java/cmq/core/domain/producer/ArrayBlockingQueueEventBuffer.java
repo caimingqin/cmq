@@ -1,10 +1,12 @@
-package cmq.core.domain;
+package cmq.core.domain.producer;
 
 import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import cmq.core.domain.DomainEvent;
 
 public class ArrayBlockingQueueEventBuffer implements DomainEventBuffer {
 

@@ -1,5 +1,7 @@
 package cmq.core.command;
 
+import cmq.core.domain.DomainEventGather;
+
 public abstract class AbstractDomainEventcommand implements Command {
 	
 	public Object execute() {
