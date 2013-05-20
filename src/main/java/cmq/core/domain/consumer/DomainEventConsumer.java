@@ -6,6 +6,10 @@ import java.util.List;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 
 import cmq.core.annotation.AutoEventHandler;
 import cmq.core.domain.DomainEvent;
@@ -16,9 +20,11 @@ public class DomainEventConsumer {
 	private List<Object> consumers = new ArrayList<Object>();
 
 	private Log logger = LogFactory.getLog(this.getClass().getName());
+//	private PlatformTransactionManager platformTransactionManager;
 
 	public DomainEventConsumer(List<Object> consumers) {
 		this.consumers = consumers;
+//		platformTransactionManager = new DataSourceTransactionManager(dataSource);
 	}
 
 	public void add(Object consumer) {
@@ -27,6 +33,9 @@ public class DomainEventConsumer {
 
 	private void before() {
 		logger.info("开启事物");
+//		DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+//		def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRED);
+//		TransactionStatus transaction = platformTransactionManager.getTransaction(def);
 	}
 
 	private void after() {

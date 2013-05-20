@@ -21,7 +21,7 @@ public class ArrayBlockingQueueEventBuffer implements DomainEventBuffer {
 
 	public boolean put(DomainEvent domainEvent) {
 //		logger.info("queue.size()======================>>>>"+queue.size());
-		return this.queue.add(domainEvent);
+		return  this.queue.add(domainEvent);
 	}
 
 	public DomainEvent take() {

@@ -7,11 +7,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
-
 public class ClassFileIterator implements ResourceIterator {
-	private static Log logger=LogFactory.getLog(ClassFileIterator.class.getName());
+//	private static Log logger=LogFactory.getLog(ClassFileIterator.class.getName());
 	private List<File> files;
 	private int index = 0;
 

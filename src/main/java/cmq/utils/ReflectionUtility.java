@@ -103,6 +103,8 @@ import org.apache.commons.lang.Validate;
      throw new IllegalStateException("Should never get here");
    }
  
+   
+   
    public static Object invokeJdbcMethod(Method method, Object target)
      throws SQLException
    {

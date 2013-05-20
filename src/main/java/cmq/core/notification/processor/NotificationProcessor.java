@@ -27,7 +27,7 @@ public class NotificationProcessor implements Runnable {
 	public void start() {
 		if (running.compareAndSet(false, true)) {
 			logger.info("start NotificationProcessor success =====================>>>");
-			this.executor.execute(this);
+//			this.executor.execute(this);
 		} else {
 			logger.error("start NotificationProcessor failure =====================>>>");
 		}
@@ -51,6 +51,7 @@ public class NotificationProcessor implements Runnable {
 						Notification Notification = buffer.take();
 						this.consumer.consumeNotification(Notification);
 					} else {
+						logger.info("NotificationProcessor ["+Thread.currentThread().getName()+"]wait(2 * 1000); =====================>>>");
 						wait(2 * 1000);
 					}
 				} catch (InterruptedException e) {

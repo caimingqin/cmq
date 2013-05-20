@@ -42,25 +42,19 @@ public class DomainEventProcessor implements Runnable {
 
 	}
 
+	protected void doRun() {
+		while (running.get()) {
+			DomainEvent domainEvent = buffer.take();// 阻塞
+			if (domainEvent != null) {
+				this.consumer.consumeDomainEvent(domainEvent);
+			}
+			logger.info("consumeDomainEvent===>>" + domainEvent);
+		}
+	}
+
 	@Override
 	public void run() {
-		while (running.get()) {
-			synchronized (this) {
-				try {
-
-					if (buffer.size() > 0) {
-						DomainEvent domainEvent = buffer.take();
-						this.consumer.consumeDomainEvent(domainEvent);
-					} else {
-						wait(2 * 1000);
-					}
-
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-
-		}
+		doRun();
 	}
 
 }
